@@ -3,6 +3,7 @@ Adaptive Ladder Queue implementation
 
 
 ##Thanks
+
 Ludovica Sacco for code fixes and improvements
 
 
