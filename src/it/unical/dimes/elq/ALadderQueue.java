@@ -480,7 +480,7 @@ public class ALadderQueue {
 						maxBucket = k;
 				}
 			} else {
-				// TODO
+				assert false;
 			}
 		}
 
