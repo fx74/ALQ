@@ -106,6 +106,7 @@ public class ALadderQueue {
 				bottom = null;
 				return;
 			} // else not possible to create a new rung
+			assert false;
 		}
 		
 		// insert in bottom
@@ -118,13 +119,6 @@ public class ALadderQueue {
 		double d = ts - m;
 		m = m + occurrences * (d / newsize);
 		m2 = m2 + occurrences * d * (ts - m);
-		updated = false;
-	}
-
-	private void smartSpawnStatsTopDequeue(final long ts, final int occurrences, final int newsize) {
-		double d = ts - m;
-		m = m - occurrences * d / newsize;
-		m2 = m2 - occurrences * d * (ts - m);
 		updated = false;
 	}
 
