@@ -6,7 +6,7 @@ Adaptive Ladder Queue implementation
 
 ## Thanks
 
-Ludovica Sacco for code fixes and improvements
+Ludovica Sacco [@ludvi](https://github.com/ludvi) for code fixes and improvements
 
 
 ## Contribution
