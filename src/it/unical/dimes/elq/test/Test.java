@@ -40,32 +40,33 @@ public class Test {
 
 		// EXPERIMENTS
 		// Ladder Queue
-		System.out.printf("XLQ grouping=%s upgrowing=%s smartspawn=%s\n", false, false, false);
+		System.out.print("LQ ");
 		testALQ(list, false, false, false);
-
+		
 		// Priority Queue
-		System.out.println("PQ");
+		System.out.print("PQ ");
 		testPQ(list);
 
 		// Priority Queue + Grouping
-		System.out.println("PQG");
+		System.out.print("PQG ");
 		testPQG(list);
 
 		// Adaptive Ladder Queue + Grouping + UpGrowing + SmartSpawning
-		System.out.printf("ALQ grouping=%s upgrowing=%s smartspawn=%s\n", true, true, true);
+		System.out.print("ALQ+GUS ");
 		testALQ(list, true, true, true);
 
 		// Adaptive Ladder Queue + Grouping + UpGrowing
-		System.out.printf("ALQ grouping=%s upgrowing=%s smartspawn=%s\n", true, true, false);
+		System.out.print("ALQ+GU ");
 		testALQ(list, true, true, false);
 
 		// Adaptive Ladder Queue + Grouping + SmarSpawning
-		System.out.printf("ALQ grouping=%s upgrowing=%s smartspawn=%s\n", true, false, true);
+		System.out.print("ALQ+GS ");
 		testALQ(list, true, false, true);
 
 		// Adaptive Ladder Queue + Grouping
-		System.out.printf("ALQ grouping=%s upgrowing=%s smartspawn=%s\n", true, false, false);
+		System.out.print("ALQ+G ");
 		testALQ(list, true, false, false);
+
 
 	}
 
@@ -106,19 +107,9 @@ public class Test {
 			}
 			if (c < min)
 				min = c;
-			// point out the beginning of considerable results
-			if (i == SCRAP)
-				System.out.print("*");
-			System.out.print(".");
-			System.out.printf("%2d) time: %d\n", i, c);
 		}
-		System.out.println();
 		sit = sit / (TOT - SCRAP);
-		System.out.println("Prioritity Queue");
-		System.out.println(Math.sqrt(m2 / (TOT - SCRAP)));
-		System.out.println(sit + " nanosec ");
-		System.out.println("mean " + m);
-		System.out.println("min: " + min);
+		System.out.println(m);
 	}
 
 	public static long fullTestPQ(LinkedList<Action> list) {
@@ -160,9 +151,6 @@ public class Test {
 		}
 		time = System.nanoTime() - time;
 		if (si) {
-			System.out.println("size=" + ladder.size());
-			System.out.println("expected " + x.getTs() + " obtained" + e.getTimeStamp());
-			System.out.println(i);
 			throw new RuntimeException("");
 		}
 
@@ -195,18 +183,9 @@ public class Test {
 
 			if (c < min)
 				min = c;
-			if (i == SCRAP)
-				System.out.print("*");
-			System.out.printf("%2d) time: %d\n", i, c);
-			System.out.print(".");
 		}
-		System.out.println();
 		sit = sit / (TOT - SCRAP);
-		System.out.println("Ladder Queue");
-		System.out.println(Math.sqrt(m2 / (TOT - SCRAP)));
-		System.out.println(sit + " nanosec ");
-		System.out.println("mean " + m);
-		System.out.println("min: " + min);
+		System.out.println(m);
 	}
 
 	public static long fullTest(LinkedList<Action> list, FQ ladder) {
@@ -250,9 +229,6 @@ public class Test {
 		}
 
 		if (si) {
-			System.out.println("size=" + ladder.size());
-			System.out.println("expected " + x.getTs() + " obtained:" + e.getTimeStamp());
-			System.out.println(i);
 			throw new RuntimeException("");
 		}
 
@@ -283,25 +259,11 @@ public class Test {
 				m = m + d / (i - (SCRAP - 1));
 				m2 = m2 + d * (c - m);
 			}
-			if (i == 0) {
-				System.out.printf("rungs=%d, topinsert=%d, runginsert=%d, bottominsert=%d\n", ladder.getRungused(),
-						ladder.getTopInsert(), ladder.getRungInsert(), ladder.getBottomInsert());
-			}
 			if (c < min)
 				min = c;
-			if (i == SCRAP)
-				System.out.print("*");
-			System.out.printf("%2d) time: %d\n", i, c);
-			System.out.print(".");
 		}
-		System.out.println();
 		sit = sit / (TOT - SCRAP);
-		System.out.println("Ladder Queue");
-		System.out.println(Math.sqrt(m2 / (TOT - SCRAP)));
-		System.out.println(sit + " nanosec ");
-		System.out.println("mean " + m);
-		System.out.println("min: " + min);
-
+		System.out.println(m);
 	}
 
 	public static long fullTestALQ(LinkedList<Action> list, ALadderQueue ladder) {
@@ -347,9 +309,6 @@ public class Test {
 		}
 
 		if (si) {
-			System.out.println("size=" + ladder.size());
-			System.out.println("expected " + x.getTs() + " obtained" + e.getTimeStamp());
-			System.out.println(i);
 			throw new RuntimeException("");
 		}
 
@@ -401,11 +360,9 @@ public class Test {
 			meanincr = meanincr + d / (i + 1);
 
 			list.add(new Put(ts + s));
-			System.out.println(ts+s);
 			putList.add(ts + s);
 			if (i > 0 && i % (qsize / 10) == 0) {
 				ts += meanincr;
-				System.out.println(meanincr);
 			}
 
 		}
