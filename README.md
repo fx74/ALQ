@@ -1,6 +1,6 @@
 # ALQ
 Adaptive Ladder Queue implementation.<br /> It is an updated version of the Ladder Queue introduced by W.T.Tang and R.S.M.Goh (https://dl.acm.org/citation.cfm?id=1103324). Its main goal is to achieve O(1) theoretical complexity in real-world performance under various workloads. The Classic Hold model has been adopted to create the event queue. It implies that each dequeue operation is followed by an enqueue one.
-
+The Adaptive Ladder Queue is an effective implementation of the Pending Event Set (PES) in Descrete Event Simulation (DES). Its use is not confined to the simulation field, but the introduced data structure can be emplyed in other areas such as multimedia systems or image analysis, etc.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
@@ -43,10 +43,10 @@ In run.sh it is possible to set distribution number in 'DISTR', considering the 
 
 
 Moreover, in it.unical.dimes.elq.test.Test.java it is possible to set:<br />
-- number of executions -->  'TOT'                           |<br />
-                                                            |---> for every distribution and size<br />  
-- number of thrown away executions --> 'SCRAP'              |<br />
-                                                             <br />
+- number of executions -->  'TOT'      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|  <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---> for every distribution and size<br />  
+- number of thrown away executions --> 'SCRAP'     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |              <br />
+<br />
 - number of accesses in it.unical.dimes.elq.test.Test.java modifying variable 'accesses'.<br />
 
 
