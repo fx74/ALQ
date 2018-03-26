@@ -14,7 +14,7 @@ Please install:<br />
 -Apache Commons Math 3.6.1 (Apache License 2.0) http://commons.apache.org/proper/commons-math/
 
 ### Data Structure
-The Adaptive Ladder Queue can be downloaded in its whole implementation directing the attention on the ALQ/src/it/unical/dimes/elq/ path. In 'elq' folder the following classes are needed in order to reuse and import the data structure:
+The Adaptive Ladder Queue can be downloaded in its whole implementation directing the attention on the path ALQ/src/it/unical/dimes/elq/. In 'elq' folder the following classes are needed in order to reuse and import the data structure:
 
 - ALadderQueue.java<br />
 - AtomicEvent.java<br />
@@ -38,7 +38,7 @@ import it.unical.dimes.elq.AtomicEvent;
 import it.unical.dimes.elq.CompositeEvent;
 import it.unical.dimes.elq.Event;
 
-public class Prova {
+public class Test {
 	public static void main(String [] args){
 		ALadderQueue alq=new ALadderQueue();
 		Action x=null;
