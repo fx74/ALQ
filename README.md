@@ -6,13 +6,6 @@ The Adaptive Ladder Queue is an effective implementation of the Pending Event Se
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 
-### Prerequisites
-Unix system reccomended.
-
-Please install:<br />
--Java runtime environment version: 1.8.0_xxx.<br />
--Apache Commons Math 3.6.1 (Apache License 2.0) http://commons.apache.org/proper/commons-math/
-
 ### Data Structure
 The Adaptive Ladder Queue can be downloaded in its whole implementation directing the attention on the path ALQ/src/it/unical/dimes/elq/. In 'elq' folder the following classes are needed in order to reuse and import the data structure:
 
@@ -49,9 +42,15 @@ public class Test {
 }
 ```
 
-## Settings and tests implementation
-After the installation of all the prerequisites, please check /compile.sh and /bin/run.sh files.
+## Settings
+### Prerequisites
+Unix system reccomended.
 
+Please install:<br />
+-Java runtime environment version: 1.8.0_xxx.<br />
+-Apache Commons Math 3.6.1 (Apache License 2.0) http://commons.apache.org/proper/commons-math/
+After the installation of all the prerequisites, please check /compile.sh and /bin/run.sh files.
+### Test implementation
 In run.sh, it's possible to configure different values (START, END, INCR, LIMIT) in order to have a dynamic test configuration. 
 
 For example:<br />
