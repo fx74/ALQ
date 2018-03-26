@@ -33,11 +33,27 @@ import it.unical.dimes.elq.Event;
 
 public class Test {
 	public static void main(String [] args){
-		ALadderQueue alq=new ALadderQueue();
-		Action x=null;
-		Event evt=new AtomicEvent(x.getTs());
+		
+		ALadderQueue alq=new ALadderQueue(); 
+		
+		ALadderQueue alq1=new ALadderQueue(true,true,true); 
+		
+		ALadderQueue alq2=new ALadderQueue(true,true,false,64,1024,10);
+		
+		Event evt=new AtomicEvent(2);
+		
 		alq.enqueue(evt);
 		alq.dequeue();
+		alq.getRungInsert();
+		
+		alq1.enqueue(evt);
+		alq1.dequeue();
+		alq1.getRungused();
+		
+		alq2.enqueue(evt);
+		alq2.dequeue();
+		alq2.getTopInsert();
+		
 	}
 }
 ```
