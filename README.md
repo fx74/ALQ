@@ -21,6 +21,17 @@ For datasets creation, please see ALQ/src/dataset/ and import all the package:
 - Get.java
 - Put.java
 
+### Settings
+#### ALadderQueue.java
+Possibility to set in the constructor following variables:
+```
+private int THRES = 64; //Threshold to start spawning in Bottom tier
+private int THRES_TOP = 16 * THRES; //Threshold to indicate max number of events in Top tier
+private int MAX_RUNGS = 10; //Maximum number of Rungs
+private final boolean grouping; //Handling grouping operation 
+private final boolean upgrowing; //Handling upgrowing operation
+private final boolean smartspawn; //Handling smartspawning operation
+```
 MAIN EXAMPLE
 ```
 package ***;
@@ -58,7 +69,7 @@ public class Test {
 }
 ```
 
-## Settings
+## Experiments
 ### Prerequisites
 Unix system reccomended.
 
