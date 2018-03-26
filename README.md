@@ -13,8 +13,43 @@ Please install:<br />
 -Java runtime environment version: 1.8.0_xxx.<br />
 -Apache Commons Math 3.6.1 (Apache License 2.0) http://commons.apache.org/proper/commons-math/
 
+### Data Structure
+The Adaptive Ladder Queue can be downloaded in its whole implementation directing the attention on the ALQ/src/it/unical/dimes/elq/ path. In 'elq' folder the following classes are needed in order to reuse and import the data structure:
 
-### Settings
+- ALadderQueue.java<br />
+- AtomicEvent.java<br />
+- CompositeEvent.java<br />	
+- Event.java<br />	
+- EventList.java<br />	
+- LinkedEventList.java<br />
+
+For datasets creation, please see ALQ/src/dataset/ and import all the package:
+- Action.java
+- Get.java
+- Put.java
+
+MAIN EXAMPLE
+```
+package ***;
+
+import dataset.Action;
+import it.unical.dimes.elq.ALadderQueue;
+import it.unical.dimes.elq.AtomicEvent;
+import it.unical.dimes.elq.CompositeEvent;
+import it.unical.dimes.elq.Event;
+
+public class Prova {
+	public static void main(String [] args){
+		ALadderQueue alq=new ALadderQueue();
+		Action x=null;
+		Event evt=new AtomicEvent(x.getTs());
+		alq.enqueue(evt);
+		alq.dequeue();
+	}
+}
+```
+
+## Settings and tests implementation
 After the installation of all the prerequisites, please check /compile.sh and /bin/run.sh files.
 
 In run.sh, it's possible to configure different values (START, END, INCR, LIMIT) in order to have a dynamic test configuration. 
