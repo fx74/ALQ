@@ -4,9 +4,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class ALadderQueue {
-	private final static int THRES = 64;
-	private final static int THRES_TOP = 16 * THRES;
-	private final static int MAX_RUNGS = 10;
+	private int THRES = 64; //Threshold to start spawning in Bottom tier
+	private int THRES_TOP = 16 * THRES; //Threshold to indicate max number of events in Top tier
+	private int MAX_RUNGS = 10; //Maximum number of Rungs
 
 	private final boolean grouping;
 	private final boolean upgrowing;
@@ -36,13 +36,42 @@ public class ALadderQueue {
 	private int topInsert;
 	private int rungInsert;
 	private int bottomInsert;
-
+	
+	/*
+	 * Constructor with possibility to set:
+	 * - grouping 
+	 * - upgrowing
+	 * - smartspawning 
+	 * - THRES 
+	 * - THRES_TOP 
+	 * - MAX_RUNGS 
+	 * 
+	 * For the first 3 parameters, when true operation is applied otherwise no
+	 */
+	public ALadderQueue(final boolean grouping, final boolean upgrowing, final boolean smartspawn, int THRES, int THRES_TOP, int MAX_RUNGS) {
+		this.grouping = grouping;
+		this.upgrowing = upgrowing;
+		this.smartspawn = smartspawn;
+		this.THRES=THRES;
+		this.THRES_TOP=THRES_TOP;
+		this.MAX_RUNGS=MAX_RUNGS;
+	}
+	
+	/*
+	 * Constructor with possibility to set:
+	 * - grouping 
+	 * - upgrowing
+	 * - smartspawning 
+	 * 
+	 * When true operation is applied otherwise no
+	 */
 	public ALadderQueue(final boolean grouping, final boolean upgrowing, final boolean smartspawn) {
 		this.grouping = grouping;
 		this.upgrowing = upgrowing;
 		this.smartspawn = smartspawn;
 	}
-
+	
+	//default constructor
 	public ALadderQueue() {
 		this(true, true, true);
 	}
