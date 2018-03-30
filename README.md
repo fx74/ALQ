@@ -1,5 +1,5 @@
 # ALQ
-Adaptive Ladder Queue implementation.<br /> It is an updated version of the Ladder Queue introduced by W.T.Tang and R.S.M.Goh (https://dl.acm.org/citation.cfm?id=1103324). Its main goal is to achieve O(1) theoretical complexity in real-world performance under various workloads. The Classic Hold model has been adopted to create the event queue. It implies that each dequeue operation is followed by an enqueue one.
+Adaptive Ladder Queue implementation.<br /> It is an updated version of the Ladder Queue introduced by W.T.Tang and R.S.M.Goh (http://dx.doi.org/10.1145/1103323.1103324). Its main goal is to achieve O(1) theoretical complexity in real-world performance under various workloads. The Classic Hold model has been adopted to create the event queue. It implies that each dequeue operation is followed by an enqueue one.
 The Adaptive Ladder Queue is an effective implementation of the Pending Event Set (PES) in Descrete Event Simulation (DES). Its use is not confined to the simulation field, but the introduced data structure can be employed in other areas such as multimedia systems or image analysis, etc.
 
 ## Getting Started
