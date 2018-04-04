@@ -22,7 +22,7 @@ import random.SpecChange;
 public class Test {
 	static int qsize;
 	static final int accesses = 1_000_000;
-	static final int TOT = 11;
+	static final int TOT = 50;
 	static final int SCRAP = 10;
 	static final long SLEEP = 500;
 	static double meanincr = 0.0;
