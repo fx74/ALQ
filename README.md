@@ -125,8 +125,9 @@ Each generated .csv file contains information about all data structures analysed
 Ludovica Sacco [@ludvi](https://github.com/ludvi) for code fixes and improvements
 
 
-## Contribution
 
-
+## License
 
 Copyright (C) Angelo Furfaro, [<img src="https://www.gnu.org/graphics/lgplv3-88x31.png" alt="LGPL v3"/>](LICENSE).
+Please cite the following paper if you use ALQ in your scientific work:
+Angelo Furfaro, Ludovica Sacco [https://doi.org/10.1145/3200921.3200925](Adaptive Ladder Queue: Achieving O(1) Amortized Access Time in Practice)
