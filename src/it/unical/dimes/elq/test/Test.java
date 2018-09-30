@@ -4,14 +4,17 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
 
-import dataset.Action;
-import dataset.Get;
-import dataset.Put;
+import org.apache.commons.math3.distribution.UniformIntegerDistribution;
+
 import it.unical.dimes.elq.ALadderQueue;
 import it.unical.dimes.elq.AtomicEvent;
 import it.unical.dimes.elq.Event;
 import it.unical.dimes.elq.FQ;
 import it.unical.dimes.elq.GroupingPriorityQueue;
+
+import dataset.Action;
+import dataset.Get;
+import dataset.Put;
 import random.Camel;
 import random.Exponential;
 import random.Pareto;
@@ -268,9 +271,7 @@ public class Test {
 		sit = sit / (TOT - SCRAP);
 		double value=m/totacc;
                 System.out.print(" "+value);
-                //System.out.print(" smartSpawn " +alq.getSmartSpawnCount());
-                //System.out.print(" upgrowing " +alq.getUpgrowingCount());
-		
+                
 	}
 
 	public static long fullTestALQ(LinkedList<Action> list, ALadderQueue ladder) {
@@ -333,7 +334,7 @@ public class Test {
 		
 		switch(distributions){
 		case 1: r=new Exponential(1.0);
-				break;
+			break;
 		case 2: 
 			r=new Exponential(1.0 / 3000.0);
 			break;
@@ -371,7 +372,6 @@ public class Test {
                         for(int i=0;i<bound && j<qsize; i++,j++){
                                 list.add(new Put(ts + sd));
                                 putList.add(ts + sd);
-                                //System.out.println(list.get(j).toString());
                         }
                         ts += meanincr;
                 }
