@@ -5,8 +5,9 @@ import java.util.Deque;
 
 public class ALadderQueue {
 	private int THRES = 64; //Threshold to start spawning in Bottom tier
-	private int THRES_TOP = 16 * THRES; //Threshold to indicate max number of events in Top tier
+	private int THRES_TOP = 48 * THRES; //Threshold to indicate max number of events in Top tier
 	private int MAX_RUNGS = 10; //Maximum number of Rungs
+	private int MAX_RUNGS_UP=3;
 
 	private final boolean grouping;
 	private final boolean upgrowing;
@@ -24,7 +25,8 @@ public class ALadderQueue {
 	private long upper = 0;
 	private boolean updated = false;
 	private long topStart = -1;
-	private int rungused = 0;
+	private int rungused = 0; //total number of rungs used
+	private int rungUpgrowing=0; // number of rungs during upgrowing
 
 	// rungs
 	private Deque<Rung> rungs = new ArrayDeque<>(MAX_RUNGS);
@@ -36,6 +38,8 @@ public class ALadderQueue {
 	private int topInsert;
 	private int rungInsert;
 	private int bottomInsert;
+	private int upgrowingCount = 0; // number of upgrowing performed
+	private int smartSpawnCount = 0; //number of smartspawn performed
 	
 	/*
 	 * Constructor with possibility to set:
@@ -79,7 +83,7 @@ public class ALadderQueue {
 	public void enqueue(Event evt) {
 		assert (evt.asComposite() == null);
 		++size;
-		final long ts = evt.getTimeStamp();
+		final double ts = evt.getTimeStamp();
 
 		if (ts >= topStart) {// insert in top
 			topInsert++;
@@ -152,23 +156,27 @@ public class ALadderQueue {
 	}
 
 	private void handleUpgrowing() {
-		if (top.nodeCount() >= THRES_TOP)
-			transferTopToRung();
+		if (top.nodeCount() >= THRES_TOP && rungUpgrowing<MAX_RUNGS_UP){
+			if(transferTopToRung()){
+				rungUpgrowing++;
+				upgrowingCount++;
+			}
+		}
 	}
 
 	private void smartTransferTopToBottom() {
 		if (bottom == null)
 			bottom = new LinkedEventList();
-		long upper = getMaxTop();
+		double upper = getMaxTop();
 		m = 0;
 		m2 = 0;
-		long max = -1;
-		long min = Long.MAX_VALUE;
-		long maxMoved = -1;
+		double max = -1;
+		double min = Long.MAX_VALUE;
+		double maxMoved = -1;
 		LinkedEventList newTop = new LinkedEventList();
 		while (!top.isEmpty()) {
 			Event evt = top.removeFirst();
-			long currTs = evt.getTimeStamp();
+			double currTs = evt.getTimeStamp();
 			if (currTs <= upper) {
 				if (currTs > maxMoved)
 					maxMoved = currTs;
@@ -186,6 +194,8 @@ public class ALadderQueue {
 				smartSpawnStatsTopEnqueue(currTs, occ, newTop.eventCount());
 			}
 		}
+		if(!newTop.isEmpty())
+			smartSpawnCount++;
 		top = newTop;
 		if (top.isEmpty()) {
 			MinTS = -1L;
@@ -202,18 +212,18 @@ public class ALadderQueue {
 		if (r == null)
 			return false;
 
-		long upper = getMaxTop();
+		double upper = getMaxTop();
 
 		if (smartspawn) {
 			m = 0;
 			m2 = 0;
-			long max = -1;
-			long min = Long.MAX_VALUE;
-			long maxRung = -1;
+			double max = -1;
+			double min = Long.MAX_VALUE;
+			double maxRung = -1;
 			LinkedEventList newTop = new LinkedEventList();
 			while (!top.isEmpty()) {
 				Event evt = top.removeFirst();
-				long currTs = evt.getTimeStamp();
+				double currTs = evt.getTimeStamp();
 				if (currTs <= upper) {
 					if (currTs > maxRung)
 						maxRung = currTs;
@@ -231,6 +241,8 @@ public class ALadderQueue {
 					smartSpawnStatsTopEnqueue(currTs, occ, newTop.eventCount());
 				}
 			}
+			if(!newTop.isEmpty())
+				smartSpawnCount++;
 			top = newTop;
 			if (top.isEmpty()) {
 				MinTS = -1L;
@@ -273,10 +285,11 @@ public class ALadderQueue {
 	 * 
 	 */
 	public Event dequeue() {
+		--size;
 		if (bottom == null || bottom.isEmpty()) {
 
 			if (rungs.size() == 0) {
-				long upper = getMaxTop();
+				double upper = getMaxTop();
 
 				if ((upper - MinTS) / THRES_TOP == 0) {
 					if (upper == MaxTS) {// trasfers entire top
@@ -304,6 +317,9 @@ public class ALadderQueue {
 				lastRung.minBucket++;
 				if (k == lastRung.maxBucket) {
 					rungs.removeLast();
+					rungused=rungs.size();
+                                        if(rungused < MAX_RUNGS_UP)
+						rungUpgrowing=rungused;
 				} else {
 					lastRung.rCur = lastRung.rStart + lastRung.minBucket * lastRung.bucketWidth;
 				}
@@ -312,8 +328,6 @@ public class ALadderQueue {
 			}
 			bottom.sort(grouping);
 		}
-		
-		--size;
 		
 		return bottom.removeFirstAtomic();
 	}
@@ -400,20 +414,20 @@ public class ALadderQueue {
 		if (rsize >= MAX_RUNGS)
 			return null;
 
-		long bw;
-		long w;
-		long rStart;
+		double bw;
+		double w;
+		double rStart;
 
 		if (elist == top) {
 			assert rsize == 0 || upgrowing;
-			long min = MinTS;
+			double min = MinTS;
 			if (rsize > 0) {
 				min = topStart;
 			} else {
 				min = MinTS;
 			}
 			w = getMaxTop() - min;
-			long nc = THRES;
+			double nc = THRES;
 			bw = w / nc;
 			if (bw == 0)
 				return null;
@@ -441,23 +455,26 @@ public class ALadderQueue {
 		return r;
 	}
 
-	private long getMaxTop() {
+	private double getMaxTop() {
 		if (smartspawn) {
 			if (updated)
 				return upper;
-			upper = (long) (m + alpha * Math.sqrt(m2) / (top.eventCount() - 1));
+			upper = (double) (m + alpha * Math.sqrt(m2) / (top.eventCount() - 1));
 
 			if (upper > MaxTS)
 				upper = MaxTS;
-
+			if(upper<MinTS)
+				upper=MinTS;
+			
 			updated = true;
 			return upper;
 		}
+		
 		return MaxTS;
 	}
 
 	private final class Rung {
-		long bucketWidth;
+		double bucketWidth;
 		long rStart;
 		long rCur;
 
@@ -541,6 +558,14 @@ public class ALadderQueue {
 
 	public int getRungused() {
 		return rungused;
+	}
+	
+	public int getUpgrowingCount() {
+		return upgrowingCount;
+	}
+
+	public int getSmartSpawnCount() {
+		return smartSpawnCount;
 	}
 	
 }
