@@ -27,6 +27,8 @@ public class Test {
 	static final long SLEEP = 500;
 	static double meanincr = 0.0;
 	static int distributions;
+	static int c = 100;
+        static int totacc = 2_000_000;
 
 	public static void main(String[] args) {
 		if (args.length != 2)
@@ -40,34 +42,33 @@ public class Test {
 
 		// EXPERIMENTS
 		// Ladder Queue
-		System.out.print("LQ ");
+		//System.out.print("LQ ");
 		testALQ(list, false, false, false);
 		
 		// Priority Queue
-		System.out.print("PQ ");
+		//System.out.print("PQ ");
 		testPQ(list);
 
 		// Priority Queue + Grouping
-		System.out.print("PQG ");
+		//System.out.print("PQG ");
 		testPQG(list);
 
 		// Adaptive Ladder Queue + Grouping + UpGrowing + SmartSpawning
-		System.out.print("ALQ+GUS ");
+		//System.out.print("ALQ+GUS ");
 		testALQ(list, true, true, true);
 
 		// Adaptive Ladder Queue + Grouping + UpGrowing
-		System.out.print("ALQ+GU ");
+		//System.out.print("ALQ+GU ");
 		testALQ(list, true, true, false);
 
 		// Adaptive Ladder Queue + Grouping + SmarSpawning
-		System.out.print("ALQ+GS ");
+		//System.out.print("ALQ+GS ");
 		testALQ(list, true, false, true);
 
 		// Adaptive Ladder Queue + Grouping
-		System.out.print("ALQ+G ");
+		//System.out.print("ALQ+G ");
 		testALQ(list, true, false, false);
-
-
+		
 	}
 
 	private static void testPQ(LinkedList<Action> list) {
@@ -109,7 +110,8 @@ public class Test {
 				min = c;
 		}
 		sit = sit / (TOT - SCRAP);
-		System.out.println(m);
+		double value=m/totacc;
+		System.out.print(" "+value);
 	}
 
 	public static long fullTestPQ(LinkedList<Action> list) {
@@ -185,7 +187,8 @@ public class Test {
 				min = c;
 		}
 		sit = sit / (TOT - SCRAP);
-		System.out.println(m);
+		double value=m/totacc;
+		System.out.print(" "+value);
 	}
 
 	public static long fullTest(LinkedList<Action> list, FQ ladder) {
@@ -263,7 +266,11 @@ public class Test {
 				min = c;
 		}
 		sit = sit / (TOT - SCRAP);
-		System.out.println(m);
+		double value=m/totacc;
+                System.out.print(" "+value);
+                //System.out.print(" smartSpawn " +alq.getSmartSpawnCount());
+                //System.out.print(" upgrowing " +alq.getUpgrowingCount());
+		
 	}
 
 	public static long fullTestALQ(LinkedList<Action> list, ALadderQueue ladder) {
@@ -350,22 +357,26 @@ public class Test {
 			break;
 		}
 
-		long ts = 0;
-		for (int i = 0; i < qsize; i++) {
-			double sd = factor * r.sample();
-			long s = (long) (sd);
+		UniformIntegerDistribution ud= new UniformIntegerDistribution(0,2*c-1);
+                int bound;
 
-			// estimation expected value
-			double d = sd - meanincr;
-			meanincr = meanincr + d / (i + 1);
+                double ts = 0;
 
-			list.add(new Put(ts + s));
-			putList.add(ts + s);
-			if (i > 0 && i % (qsize / 10) == 0) {
-				ts += meanincr;
-			}
-
-		}
+                int j=0;
+                while(j<qsize) {
+                        bound=ud.sample();
+                        double sd = factor * r.sample();
+                        double d = sd - meanincr;
+                        meanincr = meanincr + d / (j + 1);
+                        for(int i=0;i<bound && j<qsize; i++,j++){
+                                list.add(new Put(ts + sd));
+                                putList.add(ts + sd);
+                                //System.out.println(list.get(j).toString());
+                        }
+                        ts += meanincr;
+                }
+		
+		//TEST CH
 		for (int j = 0; j < accesses; j++) {
 			ts = putList.remove();
 			list.add(new Get(ts));
