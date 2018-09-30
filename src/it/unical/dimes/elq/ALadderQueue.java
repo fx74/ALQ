@@ -17,14 +17,14 @@ public class ALadderQueue {
 
 	// top data structures
 	private LinkedEventList top = new LinkedEventList();
-	private long MinTS = -1L;
-	private long MaxTS = -1L;
+	private double MinTS = -1L;
+	private double MaxTS = -1L;
 	private double m = 0;
 	private double m2 = 0;
 	private final double alpha = 1.7;
-	private long upper = 0;
+	private double upper = 0;
 	private boolean updated = false;
-	private long topStart = -1;
+	private double topStart = -1;
 	private int rungused = 0; //total number of rungs used
 	private int rungUpgrowing=0; // number of rungs during upgrowing
 
@@ -148,7 +148,7 @@ public class ALadderQueue {
 
 	}
 
-	private void smartSpawnStatsTopEnqueue(final long ts, final int occurrences, final int newsize) {
+	private void smartSpawnStatsTopEnqueue(final double ts, final int occurrences, final int newsize) {
 		double d = ts - m;
 		m = m + occurrences * (d / newsize);
 		m2 = m2 + occurrences * d * (ts - m);
@@ -171,7 +171,7 @@ public class ALadderQueue {
 		m = 0;
 		m2 = 0;
 		double max = -1;
-		double min = Long.MAX_VALUE;
+		double min = Double.MAX_VALUE;
 		double maxMoved = -1;
 		LinkedEventList newTop = new LinkedEventList();
 		while (!top.isEmpty()) {
@@ -218,7 +218,7 @@ public class ALadderQueue {
 			m = 0;
 			m2 = 0;
 			double max = -1;
-			double min = Long.MAX_VALUE;
+			double min = Double.MAX_VALUE;
 			double maxRung = -1;
 			LinkedEventList newTop = new LinkedEventList();
 			while (!top.isEmpty()) {
@@ -475,8 +475,8 @@ public class ALadderQueue {
 
 	private final class Rung {
 		double bucketWidth;
-		long rStart;
-		long rCur;
+		double rStart;
+		double rCur;
 
 		int bucketCount = 0;
 
@@ -490,13 +490,13 @@ public class ALadderQueue {
 		 * 
 		 * @param n number of buckets to create
 		 */
-		Rung(final long w, final long bw) {
+		Rung(final double w, final double bw) {
 			int s = (int) (w / bw) + 1;
 			bucket = new EventList[s];
 			init(bw);
 		}
 
-		void init(long bktWidth) {
+		void init(double bktWidth) {
 			bucketWidth = bktWidth;
 
 			bucketCount = minBucket = maxBucket = 0;
