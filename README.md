@@ -130,6 +130,9 @@ Ludovica Sacco [@ludvi](https://github.com/ludvi) for code fixes and improvement
 
 Copyright (C) Angelo Furfaro, [<img src="https://www.gnu.org/graphics/lgplv3-88x31.png" alt="LGPL v3"/>](LICENSE).
 
-Please cite the following paper if you use ALQ in your scientific work:
+Please cite the following papers if you use ALQ in your scientific work:
 
 Angelo Furfaro, Ludovica Sacco [Adaptive Ladder Queue: Achieving O(1) Amortized Access Time in Practice](https://doi.org/10.1145/3200921.3200925), SIGSIM-PADS '18 Proceedings of the 2018 ACM SIGSIM Conference on Principles of Advanced Discrete Simulation, Pages 101-104, Rome, Italy — May 23 - 25, 2018.
+
+Angelo Furfaro, Ludovica Sacco [Exploiting Adaptive Ladder Queue into Repast Simulation Platform](), Proceedings of the22nd International Symposium on Distributed Simulation and Real Time Applications (IEEE/ACM DS-RT 2018), Pages 173-179, Madrid, Spain — October 15 - 17, 2018.
+
