@@ -31,7 +31,7 @@ public class Test {
 	static double meanincr = 0.0;
 	static int distributions;
 	static int c = 100;
-        static int totacc = 2_000_000;
+	static int totacc = 2_000_000;
 
 	public static void main(String[] args) {
 		if (args.length != 2)
@@ -45,42 +45,40 @@ public class Test {
 
 		// EXPERIMENTS
 		// Ladder Queue
-		//System.out.print("LQ ");
+		// System.out.print("LQ ");
 		testALQ(list, false, false, false);
-		
+
 		// Priority Queue
-		//System.out.print("PQ ");
+		// System.out.print("PQ ");
 		testPQ(list);
 
 		// Priority Queue + Grouping
-		//System.out.print("PQG ");
+		// System.out.print("PQG ");
 		testPQG(list);
 
 		// Adaptive Ladder Queue + Grouping + UpGrowing + SmartSpawning
-		//System.out.print("ALQ+GUS ");
+		// System.out.print("ALQ+GUS ");
 		testALQ(list, true, true, true);
 
 		// Adaptive Ladder Queue + Grouping + UpGrowing
-		//System.out.print("ALQ+GU ");
+		// System.out.print("ALQ+GU ");
 		testALQ(list, true, true, false);
 
 		// Adaptive Ladder Queue + Grouping + SmarSpawning
-		//System.out.print("ALQ+GS ");
+		// System.out.print("ALQ+GS ");
 		testALQ(list, true, false, true);
 
 		// Adaptive Ladder Queue + Grouping
-		//System.out.print("ALQ+G ");
+		// System.out.print("ALQ+G ");
 		testALQ(list, true, false, false);
-		
+
 	}
 
 	private static void testPQ(LinkedList<Action> list) {
 		/*
-		 * sit --> average time expressed in nanoseconds 
-		 * c --> temporary variable to store the min execution time 
-		 * m --> mean 
-		 * d --> temporary variable helping in computation 
-		 * m2 --> variance
+		 * sit --> average time expressed in nanoseconds c --> temporary variable to
+		 * store the min execution time m --> mean d --> temporary variable helping in
+		 * computation m2 --> variance
 		 */
 		long sit = 0, c = 0;
 		double m2 = 0, d = 0, m = 0;
@@ -95,8 +93,8 @@ public class Test {
 			}
 
 			/*
-			 * If the execution is one of the first 'SRAP' then do not compute
-			 * average and variance. Just execute!
+			 * If the execution is one of the first 'SRAP' then do not compute average and
+			 * variance. Just execute!
 			 * 
 			 */
 			if (i < SCRAP)
@@ -113,8 +111,8 @@ public class Test {
 				min = c;
 		}
 		sit = sit / (TOT - SCRAP);
-		double value=m/totacc;
-		System.out.print(" "+value);
+		double value = m / totacc;
+		System.out.print(" " + value);
 	}
 
 	public static long fullTestPQ(LinkedList<Action> list) {
@@ -162,7 +160,6 @@ public class Test {
 		return time;
 	}
 
-
 	private static void testPQG(LinkedList<Action> list) {
 		long min = Long.MAX_VALUE;
 		long sit = 0, c = 0;
@@ -190,8 +187,8 @@ public class Test {
 				min = c;
 		}
 		sit = sit / (TOT - SCRAP);
-		double value=m/totacc;
-		System.out.print(" "+value);
+		double value = m / totacc;
+		System.out.print(" " + value);
 	}
 
 	public static long fullTest(LinkedList<Action> list, FQ ladder) {
@@ -239,7 +236,7 @@ public class Test {
 		}
 
 		time = System.nanoTime() - time;
-		
+
 		return time;
 	}
 
@@ -269,9 +266,9 @@ public class Test {
 				min = c;
 		}
 		sit = sit / (TOT - SCRAP);
-		double value=m/totacc;
-                System.out.print(" "+value);
-                
+		double value = m / totacc;
+		System.out.print(" " + value);
+
 	}
 
 	public static long fullTestALQ(LinkedList<Action> list, ALadderQueue ladder) {
@@ -311,9 +308,9 @@ public class Test {
 					break;
 				}
 			}
-			
+
 			i++;
-			
+
 		}
 
 		if (si) {
@@ -321,7 +318,7 @@ public class Test {
 		}
 
 		time = System.nanoTime() - time;
-		
+
 		return time;
 	}
 
@@ -331,58 +328,66 @@ public class Test {
 
 		final double factor = 1.0;
 		RandomVariable r = null;
-		
-		switch(distributions){
-		case 1: r=new Exponential(1.0);
+
+		switch (distributions) {
+		case 1:
+			r = new Exponential(1.0);
 			break;
-		case 2: 
-			r=new Exponential(1.0 / 3000.0);
+		case 2:
+			r = new Exponential(1.0 / 3000.0);
 			break;
 		case 3:
-			r=new Pareto(1,1);
+			r = new Pareto(1, 1);
 			break;
 		case 4:
-			r=new Pareto(1,1.5);
+			r = new Pareto(1, 1.5);
 			break;
 		case 5:
-			r=new Pareto(1,700);
+			r = new Pareto(1, 700);
 			break;
 		case 6:
-			r=new SpecChange();
+			r = new SpecChange();
 			break;
 		case 7:
-			r=new Camel(0,1000,2,0.001,0.999);
+			r = new Camel(0, 1000, 2, 0.001, 0.999);
 			break;
 		case 8:
-			r=new SpecBimodal();
+			r = new SpecBimodal();
 			break;
 		}
 
-		UniformIntegerDistribution ud= new UniformIntegerDistribution(0,2*c-1);
-                int bound;
+		UniformIntegerDistribution ud = new UniformIntegerDistribution(0, 2 * c - 1);
+		int bound;
 
-                double ts = 0;
+		double ts = 0;
 
-                int j=0;
-                while(j<qsize) {
-                        bound=ud.sample();
-                        double sd = factor * r.sample();
-                        double d = sd - meanincr;
-                        meanincr = meanincr + d / (j + 1);
-                        for(int i=0;i<bound && j<qsize; i++,j++){
-                                list.add(new Put(ts + sd));
-                                putList.add(ts + sd);
-                        }
-                        ts += meanincr;
-                }
-		
-		//TEST CH
-		for (int j = 0; j < accesses; j++) {
-			ts = putList.remove();
-			list.add(new Get(ts));
-			long s = (long) (factor * r.sample());
-			list.add(new Put(ts + s));
-			putList.add(ts + s);
+		int j = 0;
+		int incrCount = 0;
+		while (j < qsize) {
+			bound = ud.sample();
+			double sd = factor * r.sample();
+			double d = sd - meanincr;
+			meanincr = meanincr + d / (incrCount + 1);
+			incrCount++;
+			for (int i = 0; i < bound && j < qsize; i++, j++) {
+				long lRepr = Double.doubleToLongBits(ts + sd);
+				list.add(new Put(lRepr));
+				putList.add(lRepr);
+
+			}
+			ts += meanincr;
+		}
+
+		// TEST CH
+		for (int jj = 0; jj < accesses; jj++) {
+			ts = Double.longBitsToDouble(putList.remove());
+			list.add(new Get(Double.doubleToLongBits(ts)));
+			
+			double s =  (factor * r.sample());
+			long lRepr = Double.doubleToLongBits(ts + s);
+			list.add(new Put(lRepr));
+			putList.add(lRepr);
+			
 		}
 
 		return list;

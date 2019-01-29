@@ -48,12 +48,15 @@ public class Test2 {
 
 		// EVENT LIST CREATION
 		LinkedList<Action> list = generate_random();
+		/*dump
 		try {
 			dumpToFile(list, Paths.get("/Users/angelo/ALQ/dump.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
+		
 		//System.exit(0);
 		// EXPERIMENTS
 		// Ladder Queue
@@ -397,7 +400,7 @@ public class Test2 {
 			// System.out.println("incr#="+incrCount+" incr="+meanincr);
 
 			incrCount++;
-			System.out.println(ts + sd);
+			//System.out.println(ts + sd);
 			for (int i = 0; i < bound && j < qsize; i++, j++) {
 				long lRepr = Double.doubleToLongBits(ts + sd);
 				list.add(new Put(lRepr));
