@@ -335,15 +335,15 @@ public final class LinkedEventList implements EventList {
 			while (!l1.isEmpty() && !l2.isEmpty()) {
 				boolean l1ok = true;
 				boolean l2ok = true;
-				double t1 = l1.head.info.getTimeStamp();
-				double t2 = l2.head.info.getTimeStamp();
+				long t1 = l1.head.info.getTimeStamp();
+				long t2 = l2.head.info.getTimeStamp();
 				while (l1ok && l2ok) {
 					if (t1 < t2) {
 						currList.add(l1.removeNode(), group);
 						if (l1.isEmpty())
 							l1ok = false;
 						else {
-							double nextT1 = l1.head.info.getTimeStamp();
+							long nextT1 = l1.head.info.getTimeStamp();
 							l1ok = nextT1 >= t1;
 							t1 = nextT1;
 						}
@@ -352,7 +352,7 @@ public final class LinkedEventList implements EventList {
 						if (l2.isEmpty())
 							l2ok = false;
 						else {
-							double nextT2 = l2.head.info.getTimeStamp();
+							long nextT2 = l2.head.info.getTimeStamp();
 							l2ok = nextT2 >= t2;
 							t2 = nextT2;
 						}
@@ -364,7 +364,7 @@ public final class LinkedEventList implements EventList {
 					if (l1.isEmpty())
 						l1ok = false;
 					else {
-						double nextT1 = l1.head.info.getTimeStamp();
+						long nextT1 = l1.head.info.getTimeStamp();
 						l1ok = nextT1 >= t1;
 						t1 = nextT1;
 					}
@@ -374,7 +374,7 @@ public final class LinkedEventList implements EventList {
 					if (l2.isEmpty())
 						l2ok = false;
 					else {
-						double nextT2 = l2.head.info.getTimeStamp();
+						long nextT2 = l2.head.info.getTimeStamp();
 						l2ok = nextT2 >= t2;
 						t2 = nextT2;
 					}
@@ -387,13 +387,13 @@ public final class LinkedEventList implements EventList {
 
 			while (!l1.isEmpty()) {
 				boolean l1ok = true;
-				double t1 = l1.head.info.getTimeStamp();
+				long t1 = l1.head.info.getTimeStamp();
 				while (l1ok) {
 					currList.add(l1.removeNode(), group);
 					if (l1.isEmpty())
 						l1ok = false;
 					else {
-						double nextT1 = l1.head.info.getTimeStamp();
+						long nextT1 = l1.head.info.getTimeStamp();
 						l1ok = nextT1 >= t1;
 						t1 = nextT1;
 					}
@@ -406,13 +406,13 @@ public final class LinkedEventList implements EventList {
 
 			while (!l2.isEmpty()) {
 				boolean l2ok = true;
-				double t2 = l2.head.info.getTimeStamp();
+				long t2 = l2.head.info.getTimeStamp();
 				while (l2ok) {
 					currList.add(l2.removeNode(), group);
 					if (l2.isEmpty())
 						l2ok = false;
 					else {
-						double nextT2 = l2.head.info.getTimeStamp();
+						long nextT2 = l2.head.info.getTimeStamp();
 						l2ok = nextT2 >= t2;
 						t2 = nextT2;
 					}

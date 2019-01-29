@@ -1,7 +1,7 @@
 package it.unical.dimes.elq;
 
 public interface Event extends Comparable< Event> {
-	double getTimeStamp();
+	long getTimeStamp();
 
 	CompositeEvent asComposite();
 }

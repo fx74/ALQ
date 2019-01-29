@@ -2,9 +2,9 @@ package it.unical.dimes.elq;
 
 public class CompositeEvent implements Event {
 	private LinkedEventList list;
-	private final double timestamp;
+	private final long timestamp;
 
-	public CompositeEvent(double ts) {
+	public CompositeEvent(long ts) {
 		timestamp = ts;
 		list = new LinkedEventList();
 
@@ -21,7 +21,7 @@ public class CompositeEvent implements Event {
 	}
 
 	@Override
-	public double getTimeStamp() {
+	public long getTimeStamp() {
 
 		return timestamp;
 	}
@@ -33,7 +33,7 @@ public class CompositeEvent implements Event {
 	}
 	@Override
 	public int compareTo(Event evt) {
-		return Double.compare(timestamp, evt.getTimeStamp());
+		return Long.compare(timestamp, evt.getTimeStamp());
 	}
 
 	public void add(Event evt) {

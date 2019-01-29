@@ -2,14 +2,14 @@ package it.unical.dimes.elq;
 
 public final class AtomicEvent implements Event {
 
-	protected final double timestamp;
+	protected final long timestamp;
 
-	public AtomicEvent(double ts) {
+	public AtomicEvent(long ts) {
 		timestamp = ts;
 	}
 
 	@Override
-	public double getTimeStamp() {
+	public long getTimeStamp() {
 
 		return timestamp;
 	}
@@ -22,7 +22,7 @@ public final class AtomicEvent implements Event {
 
 	@Override
 	public int compareTo(Event evt) {
-		return Double.compare(timestamp, evt.getTimeStamp());
+		return Long.compare(timestamp, evt.getTimeStamp());
 	}
 
 	@Override
