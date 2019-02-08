@@ -1,6 +1,8 @@
 package dataset;
 
-public abstract class Action {
+import java.io.Serializable;
+
+public abstract class Action implements Serializable{
 	private long ts;
 	
 	public Action(long ts) {

@@ -79,6 +79,14 @@ public class ALadderQueue {
 		assert (evt.asComposite() == null);
 		++size;
 		final long ts = evt.getTimeStamp();
+	
+		/*if (ts == 25343588488683292L) {
+			System.out.println();
+		}
+		if (ts == 25342710274932256L) {
+			System.out.println();
+
+		}*/
 
 		if (ts >= topStart) {// insert in top
 			topInsert++;
@@ -117,7 +125,9 @@ public class ALadderQueue {
 
 		if (bottom == null)
 			bottom = new LinkedEventList();
-		else if (bottom.nodeCount() > THRES && rungs.size() > 0) {
+		else if (bottom.nodeCount() > THRES && rungs.size() > 0
+				&& bottom.getFirst().getTimeStamp() != bottom.getLast().getTimeStamp()) {
+
 			Rung r = null;
 			r = createNewRungDown(bottom);
 			if (r != null) {
@@ -310,6 +320,7 @@ public class ALadderQueue {
 				// transfer on bottom
 				bottom = lastRung.bucket[k];
 				lastRung.bucket[k] = null;
+				lastRung.bucketCount--;
 				lastRung.minBucket++;
 				if (k == lastRung.maxBucket) {
 					rungs.removeLast();
@@ -374,7 +385,7 @@ public class ALadderQueue {
 		assert k > lastRung.maxBucket;
 
 		EventList bucket_k = lastRung.bucket[k];
-		if (bucket_k.nodeCount() > THRES) {
+		if (bucket_k.nodeCount() > THRES && lastRung.bucketWidth > 1) {
 			Rung r = createNewRungDown(bucket_k);
 			if (r == null) {
 				lastRung.minBucket = k;
@@ -383,9 +394,10 @@ public class ALadderQueue {
 			while (!bucket_k.isEmpty()) {
 				r.add(bucket_k.removeFirst());
 			}
+			lastRung.bucketCount--;
 			lastRung.minBucket = k + 1;
 			lastRung.rCur = lastRung.rStart + lastRung.minBucket * lastRung.bucketWidth;
-			checkRungs();
+			// checkRungs(); TODO danni!!!!rimosso
 			rungs.addLast(r);
 			if (rungs.size() > rungused)
 				rungused = rungs.size();
@@ -424,9 +436,11 @@ public class ALadderQueue {
 			} else {
 				min = MinTS;
 			}
-			w = getMaxTop() - min;
+			w = getMaxTop() - min + 1;// TODO attento al +1!!
 			long nc = THRES;
 			bw = w / nc;
+			if (w % THRES != 0)
+				bw++;
 			if (bw == 0)
 				return null;
 			assert bw != 0;
@@ -434,14 +448,19 @@ public class ALadderQueue {
 		} else if (elist == bottom) {
 			Rung lastRung = rungs.getLast();
 			rStart = bottom.getFirst().getTimeStamp();
-			w = lastRung.rCur - rStart;
+			w = lastRung.rCur - rStart ;// TODO +1?
 			bw = w / THRES;
+			if (w % THRES != 0)
+				bw++;
 			if (bw == 0)
 				return null;// it is not possible to create a new rung with bw=0
 		} else {
 			Rung lastRung = rungs.getLast();
 			w = lastRung.bucketWidth;
-			bw = lastRung.bucketWidth / elist.nodeCount();
+			// bw = lastRung.bucketWidth / elist.nodeCount();
+			bw = w / THRES; // TODO ripristinare
+			if (w % THRES != 0)
+				bw++;
 			if (bw == 0)
 				return null;// it is not possible to create a new rung with bw=0
 			rStart = lastRung.rCur;
@@ -488,7 +507,16 @@ public class ALadderQueue {
 		 * @param n number of buckets to create
 		 */
 		Rung(final long w, final long bw) {
-			int s = (int) (w / bw) + 1;
+
+			int s = (int) (w / bw);
+			if (w % bw != 0)
+				s++;
+			/*if (s != 64) {
+				System.out.println("strange size " + s);
+				// s=65;
+
+			}*/
+
 			bucket = new EventList[s];
 			init(bw);
 		}

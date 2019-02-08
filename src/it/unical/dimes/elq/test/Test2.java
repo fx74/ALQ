@@ -1,7 +1,12 @@
 package it.unical.dimes.elq.test;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +15,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
+
+import javax.management.RuntimeErrorException;
 
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 
@@ -48,16 +55,24 @@ public class Test2 {
 
 		// EVENT LIST CREATION
 		LinkedList<Action> list = generate_random();
-		/*dump
-		try {
-			dumpToFile(list, Paths.get("/Users/angelo/ALQ/dump.txt"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		boolean write = true;
+		if (write) {
+			try {
+				serializeToFile(list, Paths.get("/Users/angelo/ALQ/dump.obj"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				list = readFromSerializedToFile(Paths.get("/Users/angelo/ALQ/dump.obj"));
+			} catch (Exception ex) {
+			}
 		}
-		*/
-		
-		//System.exit(0);
+
+		// testPQ(list);
+
+		// System.exit(0);
 		// EXPERIMENTS
 		// Ladder Queue
 		// System.out.print("LQ ");
@@ -132,21 +147,29 @@ public class Test2 {
 
 	public static long fullTestPQ(LinkedList<Action> list) {
 		ListIterator<Action> li = list.listIterator();
-		PriorityQueue<Event> ladder = new PriorityQueue<>();
+		PriorityQueue<Event> pq = new PriorityQueue<>();
 		Action x = null;
 		boolean si = false;
 		int i = 0;
 		Event e = null;
 		for (int j = 0; j < qsize; j++) {
 			x = li.next();
-			ladder.offer(new AtomicEvent(x.getTs()));
+			pq.offer(new AtomicEvent(x.getTs()));
 		}
-
 		x = li.next();
 		if (!(x instanceof Get))
 			throw new RuntimeException();
-
-		e = ladder.remove();
+//       //Comment from here
+//		long ts = 0;
+//
+//		long newTs = x.getTs();
+//		if (newTs < ts) {
+//			throw new RuntimeException("Time goes back from " + ts + "to " + newTs);
+//
+//		} else
+//			ts = newTs;
+//		// end comment here
+		e = pq.remove();
 		System.gc();
 		try {
 			Thread.sleep(SLEEP);
@@ -157,12 +180,18 @@ public class Test2 {
 
 		while (li.hasNext()) {
 			x = li.next();
+//			//Comment from  here
+//			newTs = x.getTs();
+//			if (newTs < ts) {
+//				throw new RuntimeException("Time goes back from " + ts + "to " + newTs);
+//			}
+//			//to here
 
 			if (x instanceof Put) {
-				ladder.offer(new AtomicEvent(x.getTs()));
+				pq.offer(new AtomicEvent(x.getTs()));
 			} else if (x instanceof Get) {
-				e = ladder.remove();
-
+				e = pq.remove();
+//				ts=newTs;//comment here
 			}
 			i++;
 
@@ -351,6 +380,35 @@ public class Test2 {
 
 	}
 
+	static void serializeToFile(LinkedList<Action> list, Path p) throws IOException {
+		try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(p.toFile()))) {
+			oo.writeObject(list);
+		}
+
+	}
+
+	static LinkedList<Action> readFromSerializedToFile(Path p) throws IOException, ClassNotFoundException {
+		LinkedList<Action> rv = new LinkedList<>();
+		long minTs = Long.MAX_VALUE;
+
+		try (ObjectInputStream oi = new ObjectInputStream(new FileInputStream(p.toFile()))) {
+			LinkedList<Action> list = (LinkedList<Action>) oi.readObject();
+			for (Action a : list) {
+				long v = a.getTs();
+				if (v < minTs)
+					minTs = v;
+			}
+			for (Action a : list) {
+				if (a instanceof Get) {
+					rv.add(new Get(a.getTs() - minTs));
+				} else {
+					rv.add(new Put(a.getTs() - minTs));
+				}
+			}
+		}
+		return rv;
+	}
+
 	private static LinkedList<Action> generate_random() {
 		LinkedList<Action> list = new LinkedList<>();
 		PriorityQueue<Long> putList = new PriorityQueue<>();
@@ -400,7 +458,7 @@ public class Test2 {
 			// System.out.println("incr#="+incrCount+" incr="+meanincr);
 
 			incrCount++;
-			//System.out.println(ts + sd);
+			// System.out.println(ts + sd);
 			for (int i = 0; i < bound && j < qsize; i++, j++) {
 				long lRepr = Double.doubleToLongBits(ts + sd);
 				list.add(new Put(lRepr));
@@ -417,13 +475,13 @@ public class Test2 {
 			double s = (factor * r.sample());
 
 			bound = ud.sample();
-			int dup=0;
+			int dup = 0;
 			for (; dup < bound && jj < accesses; dup++, jj++) {
 				long lRepr = Double.doubleToLongBits(ts + s);
 				list.add(new Put(lRepr));
 				putList.add(lRepr);
 			}
-			for (int k=0;k<dup;k++) {
+			for (int k = 0; k < dup - 1; k++) {
 				ts = Double.longBitsToDouble(putList.remove());
 				list.add(new Get(Double.doubleToLongBits(ts)));
 			}
