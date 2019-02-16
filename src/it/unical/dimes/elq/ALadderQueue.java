@@ -325,7 +325,7 @@ public class ALadderQueue {
 				if (k == lastRung.maxBucket) {
 					rungs.removeLast();
 					rungused = rungs.size();
-					if (rungused < MAX_RUNGS_UP)
+					if (rungused < MAX_RUNGS_UP && rungUpgrowing>rungused)
 						rungUpgrowing = rungused;
 				} else {
 					lastRung.rCur = lastRung.rStart + lastRung.minBucket * lastRung.bucketWidth;
