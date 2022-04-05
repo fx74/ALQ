@@ -153,10 +153,12 @@ public class ALadderQueue {
 
 	}
 
-	private void smartSpawnStatsTopEnqueue(final long ts, final int occurrences, final int newsize) {
+	private void smartSpawnStatsTopEnqueue(final long ts_long, final int occurrences, final int newsize) {
+		double ts=Double.longBitsToDouble(ts_long);
 		double d = ts - m;
 		m = m + occurrences * (d / newsize);
-		m2 = m2 + occurrences * d * (ts - m);
+		m2 = m2 + occurrences * (ts*ts-m2)/newsize;
+//		m2 = m2 + occurrences * d * (ts - m);
 		updated = false;
 	}
 
@@ -476,8 +478,9 @@ public class ALadderQueue {
 		if (smartspawn) {
 			if (updated)
 				return upper;
-			upper = (long) (m + alpha * Math.sqrt(m2) / (top.eventCount() - 1));
-
+			int n = top.eventCount();
+			upper = Double.doubleToLongBits(m + alpha * Math.sqrt((m2-m*m)*n/(n-1)));
+//			upper = (long) (m + alpha * Math.sqrt(m2) / (top.eventCount() - 1));
 			if (upper > MaxTS)
 				upper = MaxTS;
 
